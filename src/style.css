@@ -20,6 +20,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: Manrope, sans-serif;
+  background-color: var(--very-pale-blue);
+  color: var(--grayish-blue);
+}
+
+button {
+  font-family: Manrope, sans-serif;
 }
 
 header {
@@ -52,11 +59,13 @@ header {
   position: relative;
   z-index: 1;
  }
+  header div hgroup h1 {
+    color: var(--dark-desaturated-blue);
+  }
 
 main {
   width: 90%;
-  max-width: calc(640px - 4rem);
-  padding: 2rem;
+  max-width: 640px;
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: var(--light-grayish-blue-bg) 0.5rem 0.5rem 1rem;
@@ -65,5 +74,20 @@ main {
 footer {
   position: absolute;
   bottom: 1vh;
+}
+
+@media screen and (max-aspect-ratio: 1) and (max-width: 767px) {
+  header div hgroup h1 {
+    font-size: 1.5rem;
+  }
+  main {
+    position: absolute;
+    top: 30vh
+  }
+
+  footer {
+    text-align: center;
+    bottom: 0;
+  }
 }
 
