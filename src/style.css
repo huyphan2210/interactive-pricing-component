@@ -77,17 +77,20 @@ footer {
 }
 
 @media screen and (max-aspect-ratio: 1) and (max-width: 767px) {
+  body {
+    flex-direction: column;
+  }
   header div hgroup h1 {
     font-size: 1.5rem;
   }
   main {
-    position: absolute;
-    top: 30vh
+    margin-block-start: 30vh;
   }
 
   footer {
+    position: static;
     text-align: center;
-    bottom: 0;
+    margin-block: 1vh;
   }
 }
 
