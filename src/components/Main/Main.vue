@@ -10,10 +10,14 @@ const discountContent = ref(window.innerWidth / window.innerHeight > 1 ? '25% di
 window.addEventListener('resize', handleResize);
 
 function hanldeInput(e: Event) {
-    pageViews.value = parseInt((e.currentTarget as any).value) * 2;
-    pricing.value = 32 / 100 * parseInt((e.currentTarget as any).value);
-    yearPricing.value = 24 / 100 * parseInt((e.currentTarget as any).value);
-    document.getElementsByTagName('input')[0].setAttribute('style', `background: linear-gradient(to right, var(--soft-cyan) 0%, var(--soft-cyan) ${(e.currentTarget as any).value}%, var(--light-grayish-blue-slider) ${(e.currentTarget as any).value}%, var(--light-grayish-blue-slider) 100%);`);
+    const input = e.currentTarget as HTMLInputElement;
+    pageViews.value = parseInt(input.value) * 2;
+    pricing.value = 32 / 100 * parseInt(input.value);
+    yearPricing.value = 24 / 100 * parseInt(input.value);
+    input.setAttribute('style', `
+        background: linear-gradient(to right, var(--soft-cyan) 0%, var(--soft-cyan) ${input.value}%, var(--light-grayish-blue-slider) ${input.value}%, var(--light-grayish-blue-slider) 100%);
+        cursor: grabbing;`
+    );
 }
 
 function handleToggle(e: Event) {
@@ -46,6 +50,9 @@ function handleResize() {
             </div>
         </div>
         <input type="range" title="Page views range" @input="hanldeInput">
+        <div id="pricing-mobile">
+                <span>${{ isYearBilling ? yearPricing.toFixed(2) : pricing.toFixed(2) }}</span> / month
+            </div>
         <div id="billing">
             <p>Monthly Billing</p>
             <div class="toggle" @click="handleToggle">
@@ -87,11 +94,14 @@ section {
             text-transform: uppercase;
             letter-spacing: 0.1rem;
         }
-        #pricing {
+        #pricing, #pricing-mobile {
             display: flex;
             align-items: center;
         }
-        #pricing span {
+        #pricing-mobile {
+            display: none;
+        }
+        #pricing span, #pricing-mobile span {
             font-size: 3rem;
             font-weight: 800;
             margin-right: 0.5rem;
@@ -99,6 +109,7 @@ section {
         }
         input {
             position: relative;
+            z-index: 1;
             width: 100%;
             -webkit-appearance: none;
             appearance: none;
@@ -120,22 +131,16 @@ section {
             width: 2.5rem;
             aspect-ratio: 1;
             background-color: var(--strong-cyan);
+            background-image: url(../../assets/images/icon-slider.svg);;
             background-repeat: no-repeat;
-            border-radius: 50%;
+            border-radius: 50% 50%;
+            background-position: 50%;
+            box-shadow: 0 0 1rem var(--strong-cyan);
         }
 
-        input::before {
-            position: absolute;
-            content: '';
-            background-image: url(../../assets/images/icon-slider.svg);
-            width: 2rem;
-            aspect-ratio: 1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-        }
+            input::-webkit-slider-thumb:hover {
+                filter: brightness(1.1);
+            }
 
         #billing {
             position: relative;
@@ -208,6 +213,7 @@ section {
 
         button:hover {
             cursor: pointer;
+            color: white;
         }
 
         #benefits div {
@@ -224,7 +230,7 @@ section {
 
 @media screen and (max-aspect-ratio: 1) {
     section {
-        padding: 1rem;
+        padding: 2rem;
     }
 
     section:last-child {
@@ -232,8 +238,37 @@ section {
         text-align: center;
     }
 
+    #numbers {
+        justify-content: center;
+    }
+
+        #pricing {
+            display: none;
+        }
+
+        #pricing-mobile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            #pricing-mobile span {
+                font-size: 3rem;
+            }
+    input {
+        margin-bottom: 2rem;
+    }
     #benefits {
         margin-block-end: 2rem;
+    }
+    @media screen and (max-width: 280px) {
+        #pricing-mobile span {
+            font-size: 2rem;
+        }
+
+        #billing p:last-child {
+            white-space: normal;
+        }
     }
 }
 </style>
